@@ -2,6 +2,7 @@
   "expo": {
     "name": "outBard",
     "slug": "outBard",
+    "privacy": "outBard",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

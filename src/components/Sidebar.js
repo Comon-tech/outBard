@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React from 'react'
 import tw from 'twrnc'
+import { getAuth } from "firebase/auth";
 import outBardIcon from '../../assets/outbard-icon.png'
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -10,6 +11,10 @@ const height = Dimensions.get('window').height;
 
 
 const Sidebar = () => {
+
+  // const messageRef = db.collection('rooms').doc('roomA')
+  // .collection('messages').doc('message1');
+
 
 
     return (

@@ -5,17 +5,65 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Sidebar from "../src/components/Sidebar";
-
+import Realm from "realm"
 import tw from 'twrnc'
 import { useState } from "react";
+import Stitch from 'mongodb-stitch-browser-sdk';
+import Generator from "../src/components/Generator";
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const isMobile = width < 600;
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI("AIzaSyCju5scpyj178pLfPfTUi7-8QPL72P05eA");
+
+// let uri = "mongodb+srv://comon928:<password>@cluster0.dgpjtis.mongodb.net/?retryWrites=true&w=majority";
+
+async function  getData(params) {
+  const app = new Realm.App({ id: "application-0-hoful" });
+  const credentials = Realm.Credentials.anonymous();
+  try {
+    const user = await app.logIn(credentials);
+  } catch(err) {
+    console.error("Failed to log in", err);
+  }
+}
 
 
 
 export default function Page() {
   const [chatInputValue, setChatInputValue] = useState()
+
+  
+  const Genrate = async () => {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+    const chat = model.startChat({
+        history: [
+          {
+            role: "user",
+            parts: "Hello, I have 2 dogs in my house.",
+          },
+          {
+            role: "model",
+            parts: "Great to meet you. What would you like to know?",
+          },
+        ],
+        generationConfig: {
+          maxOutputTokens: 100,
+        },
+      });
+    
+      const msg = "How many paws are in my house?";
+    
+      const result = await chat.sendMessage(msg);
+      const response = await result.response;
+      const text = response.text();
+      console.log(text);
+
+       
+    }
+
   return (
     <View style={tw`bg-[#363241] flex-1 flex-row `}>
       {!isMobile && Platform.OS === 'web' && <Sidebar />}
@@ -58,6 +106,7 @@ export default function Page() {
         </View>
         
         {/* <Link style={tw`text-xl font-bold text-zinc-600`} href="/Home">Home</Link> */}
+        {/* <genrate /> */}
 
         <View style={tw`p-5  flex flex-row items-center mb-10 w-[100%] `}>
         
@@ -69,7 +118,9 @@ export default function Page() {
                 
                     <TouchableOpacity
                         style={tw`  py-2 `}>
-                            <MaterialCommunityIcons style={tw`-ml-10`} name="dots-triangle" size={24} color="red" />
+                            <MaterialCommunityIcons 
+                            onPress={() => Genrate()}
+                            style={tw`-ml-10`} name="dots-triangle" size={24} color="red" />
                             
                         </TouchableOpacity>
                 
